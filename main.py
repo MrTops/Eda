@@ -25,7 +25,7 @@ def enter_ide():
 	===========================|
 	Exit|Save|Load|Help|Reload |
 	==============================================
-	Eda IDE, V0.0.0B | Type "sm Help"
+	Eda IDE, V0.0.1 | Type "sm Help"
 	File: {}         | to learn how to use Eda IDE
 	==============================================
 			""".format(current_file))
@@ -126,7 +126,7 @@ def enter_ide():
 def main_menu():
 	print("""
 	Eda IDE,
-	V 0.0.0B
+	V 0.0.1
 	Developed by @DevTops using repl.it
 	===================================
 	Please select an option below
