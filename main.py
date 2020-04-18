@@ -19,50 +19,51 @@ def enter_ide():
 	current_line = 1
 	override_update_line = False
 	while True:
-		clear()
-		print("""
+		try:
+			clear()
+			print("""
 	===========================|
 	Exit|Save|Load|Help|Reload |
 	==============================================
 	Eda IDE, V0.0.0B | Type "sm Help"
 	File: {}         | to learn how to use Eda IDE
 	==============================================
-		""".format(current_file))
-		num = 0
-		log = ""
-		for line in current_data:
-			num += 1
-			log += "{}| {}\n".format(num, line.rstrip("\n"))
-		print(log)
+			""".format(current_file))
+			num = 0
+			log = ""
+			for line in current_data:
+				num += 1
+				log += "{}| {}\n".format(num, line.rstrip("\n"))
+			print(log)
 
-		if not write_mode:
-			command = input()
+			if not write_mode:
+				command = input()
 
-		if write_mode:
-			if not override_update_line:
-				current_line = len(current_data)+1
-			
-
-			line = input("{}| ".format(current_line))
-			
-			if line == "write":
-				write_mode = False
-			elif line.startswith("b"):
-				current_line = int(line.split(" ")[1]-1)
-				override_update_line = True
-			elif line.startswith("p"):
-				current_data.pop(int(line.split(" ")[1])-1)
-			else:
+			if write_mode:
 				if not override_update_line:
-					current_data.append(line)
-				else:
-					current_data[current_line] = line
-					override_update_line = False
+					current_line = len(current_data)+1
+				
 
-		elif str.startswith(command, "sm"):
-			if command.split(" ")[1] == "Help":
-				clear()
-				print("""
+				line = input("{}| ".format(current_line))
+				
+				if line == "write":
+					write_mode = False
+				elif line.startswith("b"):
+					current_line = int(line.split(" ")[1])
+					override_update_line = True
+				elif line.startswith("p"):
+					current_data.pop(int(line.split(" ")[1])-1)
+				else:
+					if not override_update_line:
+						current_data.append(line)
+					else:
+						current_data[current_line-1] = line
+						override_update_line = False
+
+			elif str.startswith(command, "sm"):
+				if command.split(" ")[1] == "Help":
+					clear()
+					print("""
 	Eda IDE, Help Page. Hit enter to return
 	==============================================
 	Eda IDE is console based and must use commands
@@ -91,30 +92,32 @@ def enter_ide():
 
 	To exit write mode enter "Eda-exitWrite"
 	============================================================
-				""")
-				input("""	[ENTER]""")
-			elif command.split(" ")[1] == "Reload":
+					""")
+					input("""	[ENTER]""")
+				elif command.split(" ")[1] == "Reload":
+					current_data = open(current_file, "r").readlines()
+				elif command.split(" ")[1] == "Exit":
+					clear()
+					main_menu()
+					break
+				elif command.split(" ")[1] == "Load":
+					current_file = command.split(" ")[2]
+					current_data = open(current_file, "r").readlines()
+				elif command.split(" ")[1] == "Save":
+					saving = open(current_file, "w+")
+					for line in current_data:
+						saving.write(line)
+					saving.close()
+			elif str.startswith(command, "nf"):
+				new_file(command.split(" ")[1], command.split(" ")[2])
+				print("""	Created file {}\nHit enter to proceed""".format(command.split(" ")[1] + command.split(" ")[2]))
+				current_file = command.split(" ")[1] + command.split(" ")[2]
 				current_data = open(current_file, "r").readlines()
-			elif command.split(" ")[1] == "Exit":
-				clear()
-				main_menu()
-				break
-			elif command.split(" ")[1] == "Load":
-				current_file = command.split(" ")[2]
-				current_data = open(current_file, "r").readlines()
-			elif command.split(" ")[1] == "Save":
-				saving = open(current_file, "w+")
-				for line in current_data:
-					saving.write(line)
-				saving.close()
-		elif str.startswith(command, "nf"):
-			new_file(command.split(" ")[1], command.split(" ")[2])
-			print("""	Created file {}\nHit enter to proceed""".format(command.split(" ")[1] + command.split(" ")[2]))
-			current_file = command.split(" ")[1] + command.split(" ")[2]
-			current_data = open(current_file, "r").readlines()
-			input("")
-		elif command == "write":
-			write_mode = True
+				input("")
+			elif command == "write":
+				write_mode = True
+		except:
+			pass
 		
 
 		
