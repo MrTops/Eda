@@ -48,10 +48,10 @@ def enter_ide():
 				
 				if line == "write":
 					write_mode = False
-				elif line.startswith("b"):
+				elif line.startswith("editLine"):
 					current_line = int(line.split(" ")[1])
 					override_update_line = True
-				elif line.startswith("p"):
+				elif line.startswith("delLine"):
 					current_data.pop(int(line.split(" ")[1])-1)
 				else:
 					if not override_update_line:
@@ -101,13 +101,21 @@ def enter_ide():
 					main_menu()
 					break
 				elif command.split(" ")[1] == "Load":
-					current_file = command.split(" ")[2]
-					current_data = open(current_file, "r").readlines()
+					try:
+						current_file = command.split(" ")[2]
+						current_data = open(current_file, "r").readlines()
+					except:
+						print("File doesn't exist! Create it with nf")
+						input()
 				elif command.split(" ")[1] == "Save":
-					saving = open(current_file, "w+")
-					for line in current_data:
-						saving.write(line)
-					saving.close()
+					try:
+						saving = open(current_file, "w+")
+						for line in current_data:
+							saving.write(line+"\n")
+						saving.close()
+					except:
+						print("There is no open file!")
+						input()
 			elif str.startswith(command, "nf"):
 				new_file(command.split(" ")[1], command.split(" ")[2])
 				print("""	Created file {}\nHit enter to proceed""".format(command.split(" ")[1] + command.split(" ")[2]))
@@ -116,8 +124,8 @@ def enter_ide():
 				input("")
 			elif command == "write":
 				write_mode = True
-		except:
-			pass
+		except Exception:
+			print("Error: {}".format(Exception))
 		
 
 		
