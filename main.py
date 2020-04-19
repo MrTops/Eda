@@ -4,6 +4,7 @@ Main.py lets you access the IDE. The IDE allows for saving, loading, and running
 
 import os
 
+version = "0.0.2"
 
 
 def clear():
@@ -25,10 +26,10 @@ def enter_ide():
 	===========================|
 	Exit|Save|Load|Help|Reload |
 	==============================================
-	Eda IDE, V0.0.1 | Type "sm Help"
+	Eda IDE, V{} | Type "sm Help"
 	File: {}         | to learn how to use Eda IDE
 	==============================================
-			""".format(current_file))
+			""".format(version, current_file))
 			num = 0
 			log = ""
 			for line in current_data:
@@ -134,7 +135,7 @@ def enter_ide():
 def main_menu():
 	print("""
 	Eda IDE,
-	V 0.0.1
+	V{}
 	Developed by @DevTops using repl.it
 	===================================
 	Please select an option below
@@ -142,7 +143,7 @@ def main_menu():
 	1) execute file
 	2) load file
 	3) enter ide
-	""")
+	""".format(version))
 	while True:
 		try:
 			selection = int(input("#: "))
